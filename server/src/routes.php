@@ -1,14 +1,5 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+//To update routes run /sys/update_routes.php
 
-// Routes
-
-$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
+require_once '../src/Routes/BlogApi.php';
