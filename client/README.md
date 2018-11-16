@@ -1,1 +1,1 @@
-App client side using vue.js
+App client side using vue.js.
