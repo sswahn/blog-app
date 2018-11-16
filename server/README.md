@@ -1,1 +1,1 @@
-Server side app using slim php
+App server side using slim php.
