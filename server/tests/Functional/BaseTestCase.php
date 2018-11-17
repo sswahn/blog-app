@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Functional;
+namespace tests\Functional;
 
 use Slim\App;
 use Slim\Http\Request;
@@ -13,7 +13,7 @@ use Slim\Http\Environment;
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * Use middleware when running application?
@@ -66,7 +66,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         }
 
         // Register routes
-        require __DIR__ . '/../../src/routes.php';
+        require __DIR__ . '/../../src/test.routes.php';
 
         // Process the application
         $response = $app->process($request, $response);

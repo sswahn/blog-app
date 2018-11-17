@@ -12,6 +12,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use src\Utilities\CookieUtility as Cookie;
 
+use src\Utilities\UserUtility as User;
+
 use src\Models\Blog;
 
 class BlogController
@@ -22,9 +24,11 @@ class BlogController
 
             $cookie = Cookie::get($request);
 
-            $model = new Blog();
+            $user = User::validate($cookie);
 
-            $data = $model->get($cookie);
+            $model = new Blog($user);
+
+            $data = $model->get();
 
             $code = $response->getStatusCode();
 
@@ -46,9 +50,11 @@ class BlogController
 
             $cookie = Cookie::get($request);
 
-            $model = new Blog();
+            $user = User::validate($cookie);
 
-            $data = $model->getOne($request, $args, $cookie);
+            $model = new Blog($user);
+
+            $data = $model->getOne($request, $args);
 
             $code = $response->getStatusCode();
 
@@ -70,9 +76,11 @@ class BlogController
 
             $cookie = Cookie::get($request);
 
-            $model = new Blog();
+            $user = User::validate($cookie);
 
-            $data = $model->post($request, $cookie);
+            $model = new Blog($user);
+
+            $data = $model->post($request);
 
             $code = $response->getStatusCode();
 
@@ -94,9 +102,11 @@ class BlogController
 
             $cookie = Cookie::get($request);
 
-            $model = new Blog();
+            $user = User::validate($cookie);
 
-            $data = $model->put($request, $args, $cookie);
+            $model = new Blog($user);
+
+            $data = $model->put($request, $args);
 
             $code = $response->getStatusCode();
 
@@ -118,9 +128,11 @@ class BlogController
 
             $cookie = Cookie::get($request);
 
-            $model = new Blog();
+            $user = User::validate($cookie);
 
-            $data = $model->delete($args, $cookie);
+            $model = new Blog($user);
+
+            $data = $model->delete($args);
 
             $code = $response->getStatusCode();
 

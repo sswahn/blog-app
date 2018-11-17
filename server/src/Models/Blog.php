@@ -8,34 +8,49 @@ namespace src\Models;
 
 class Blog extends Model
 {
-    public function get($cookie) : array
+    private $user;
+
+    public function __construct($user = null)
+    {
+        $this->user = $user;
+    }
+
+    public function get() : array
     {
         $sql = "";
 
         $values = [];
 
         return [
-            'testing' => 'works.',
-            'test-key' => 'test-value'
+            [
+                'subject' => 'subject 1.',
+                'message' => 'message 1'
+            ],
+            [
+                'subject' => 'subject 2.',
+                'message' => 'message 2'
+            ]
         ];
 
         //return parent::call($sql, $values);
     }
 
-    public function getOne($request, $args, $cookie) : array
+    public function getOne(array $args) : array
     {
         $sql = "";
 
         $values = [];
 
         return [
-            'getOne' => 'blog api getOne request.',
-            'time()' => time()
+            [
+                'subject' => 'subject 1',
+                'message' => 'message 1'
+            ]
         ];
         //return parent::call($sql, $values);
     }
 
-    public function post($request, $cookie) : array
+    public function post($request) : array
     {
         $sql = "";
 
@@ -61,7 +76,7 @@ class Blog extends Model
         //return parent::call($sql, $values);
     }
 
-    public function put($request, $args, $cookie) : array
+    public function put($request, array $args) : array
     {
         $sql = "";
 
@@ -87,7 +102,7 @@ class Blog extends Model
         //return parent::call($sql, $values);
     }
 
-    public function delete($args, $cookie) : array
+    public function delete(array $args) : array
     {
         $sql = "";
 
