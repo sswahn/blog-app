@@ -10,53 +10,50 @@ class Blog extends Model
 {
     private $user;
 
-    public function __construct($user = null)
+    public function __construct($user = [])
     {
         $this->user = $user;
     }
 
     public function get() : array
     {
-        $sql = "";
+        $table = 'blog';
 
-        $values = [];
-
-        return [
-            [
-                'subject' => 'subject 1.',
-                'message' => 'message 1'
-            ],
-            [
-                'subject' => 'subject 2.',
-                'message' => 'message 2'
-            ]
+        $values = [
+            'id',
+            'user_id',
+            'subject',
+            'message',
+            'date_created',
+            'date_updated'
         ];
 
-        //return parent::call($sql, $values);
+        return parent::select($table, $values);
     }
 
     public function getOne(array $args) : array
     {
-        $sql = "";
+        $table = 'blog';
 
-        $values = [];
-
-        return [
-            [
-                'subject' => 'subject 1',
-                'message' => 'message 1'
-            ]
+        $values = [
+            'id',
+            'user_id',
+            'subject',
+            'message',
+            'date_created',
+            'date_updated'
         ];
-        //return parent::call($sql, $values);
+
+        $conditions = [
+            'id' => $args['id']
+        ];
+
+        return parent::select($table, $values, $conditions);
     }
 
     public function post($request) : array
     {
-        $sql = "";
-
         $params = $request->getParsedBody();
-
-        $time = time();
 
         if (!isset($params['subject']) || empty($params['subject'])) {
             throw new \Exception('A subject is required.', 400);
@@ -66,23 +63,20 @@ class Blog extends Model
             throw new \Exception('A messate is required.', 400);
         }
 
+        $table = 'blog';
+
         $values = [
+            //'user_id' => $this->user['id'],
             'subject' => $params['subject'],
             'message' => $params['message']
         ];
 
-        return $params;
-
-        //return parent::call($sql, $values);
+        return parent::insert($table, $values);
     }
 
     public function put($request, array $args) : array
     {
-        $sql = "";
-
         $params = $request->getParsedBody();
-
-        $time = time();
 
         if (!isset($params['subject']) || empty($params['subject'])) {
             throw new \Exception('A subject is required.', 400);
@@ -92,28 +86,28 @@ class Blog extends Model
             throw new \Exception('A messate is required.', 400);
         }
 
+        $table = 'blog';
+
         $values = [
             'subject' => $params['subject'],
             'message' => $params['message']
         ];
 
-        return $params;
+        $conditions = [
+            'id' => $args['id']
+        ];
 
-        //return parent::call($sql, $values);
+        return parent::update($table, $values, $conditions);
     }
 
     public function delete(array $args) : array
     {
-        $sql = "";
+        $table = 'blog';
 
-        $values = [];
-
-        return [
-            'status' => 'ok',
-            'code' => 200
+        $conditions = [
+            'id' => $args['id']
         ];
 
-        //return parent::call($sql, $values);
+        return parent::destroy($table, $conditions);
     }
-
 }

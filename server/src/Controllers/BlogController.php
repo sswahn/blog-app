@@ -54,7 +54,7 @@ class BlogController
 
             $model = new Blog($user);
 
-            $data = $model->getOne($request, $args);
+            $data = $model->getOne($args);
 
             $code = $response->getStatusCode();
 
