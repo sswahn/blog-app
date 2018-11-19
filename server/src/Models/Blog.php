@@ -8,15 +8,10 @@ namespace src\Models;
 
 class Blog extends Model
 {
-    private $user;
-
-    public function __construct($user = [])
+    public function get($request) : array
     {
-        $this->user = $user;
-    }
+        $method = $request->getMethod();
 
-    public function get() : array
-    {
         $table = 'blog';
 
         $values = [
@@ -28,11 +23,13 @@ class Blog extends Model
             'date_updated'
         ];
 
-        return parent::select($table, $values);
+        return parent::call($method, $table, $values);
     }
 
-    public function getOne(array $args) : array
+    public function getOne($request, array $args) : array
     {
+        $method = $request->getMethod();
+
         $table = 'blog';
 
         $values = [
@@ -44,11 +41,9 @@ class Blog extends Model
             'date_updated'
         ];
 
-        $conditions = [
-            'id' => $args['id']
-        ];
+        $id = $args['id'];
 
-        return parent::select($table, $values, $conditions);
+        return parent::call($method, $table, $values, $id);
     }
 
     public function post($request) : array
@@ -63,6 +58,8 @@ class Blog extends Model
             throw new \Exception('A messate is required.', 400);
         }
 
+        $method = $request->getMethod();
+
         $table = 'blog';
 
         $values = [
@@ -71,7 +68,7 @@ class Blog extends Model
             'message' => $params['message']
         ];
 
-        return parent::insert($table, $values);
+        return parent::call($method, $table, $values);
     }
 
     public function put($request, array $args) : array
@@ -86,6 +83,8 @@ class Blog extends Model
             throw new \Exception('A messate is required.', 400);
         }
 
+        $method = $request->getMethod();
+
         $table = 'blog';
 
         $values = [
@@ -93,21 +92,19 @@ class Blog extends Model
             'message' => $params['message']
         ];
 
-        $conditions = [
-            'id' => $args['id']
-        ];
+        $id = $args['id'];
 
-        return parent::update($table, $values, $conditions);
+        return parent::call($method, $table, $values, $id);
     }
 
-    public function delete(array $args) : array
+    public function delete($request, array $args) : array
     {
+        $method = $request->getMethod();
+
         $table = 'blog';
 
-        $conditions = [
-            'id' => $args['id']
-        ];
+        $id = $args['id'];
 
-        return parent::destroy($table, $conditions);
+        return parent::call($method, $table, $id);
     }
 }

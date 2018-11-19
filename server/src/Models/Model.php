@@ -8,7 +8,22 @@ namespace src\Models;
 
 class Model
 {
-    protected function select(string $table, array $values, $conditions = null) : array
+    protected function call(string $method, string $table, array $values, $id = null) : array
+    {
+        switch ($method) {
+            case 'GET':
+                return $this->select($table, $values, $id);
+            case 'POST':
+                return $this->insert($table, $values);
+            case 'PUT':
+                return $this->update($table, $values, $id);
+            case 'DELETE':
+                return $this->delete($table, $id);
+            default:
+        }
+    }
+
+    private function select(string $table, array $values, $condition = null) : array
     {
         if (!in_array('id', $values)) {
             array_unshift($values, 'id');
@@ -16,8 +31,14 @@ class Model
 
         $select = "SELECT ". implode(', ', $values) ." FROM $table";
 
-        $select .= $this->handleConditions($conditions);
+        if (false !== strpos($condition, 'ORDER BY')) {
+            $select .= " $condition";
+        }
 
+        if (ctype_digit($condition)) {
+            $select .= " WHERE id=$condition";
+        }  
+        
         try {
 
             $database = Database::getConnection();
@@ -38,7 +59,7 @@ class Model
         }
     }
 
-    protected function insert(string $table, array $values) : array
+    private function insert(string $table, array $values) : array
     {   
         $date = date("Y-m-d H:i:s");
 
@@ -68,7 +89,7 @@ class Model
         }
     }
 
-    protected function update(string $table, array $values, array $conditions) : array
+    private function update(string $table, array $values, int $id) : array
     {
         $values['date_updated'] = date("Y-m-d H:i:s");
 
@@ -83,7 +104,7 @@ class Model
 
         $columns = rtrim($columns, ', ');
 
-        $update = "UPDATE $table SET $columns WHERE " . key($conditions) ."=". current($conditions);
+        $update = "UPDATE $table SET $columns WHERE id=$id";
 
         try {
 
@@ -95,7 +116,7 @@ class Model
 
             $statement->execute();
 
-            return $this->select($table, $keys, $conditions);
+            return $this->select($table, $keys, $id);
 
         } catch (\PDOException $pe) {
 
@@ -103,11 +124,11 @@ class Model
         }
     }
 
-    protected function destroy(string $table, array $conditions) : array
+    private function delete(string $table, int $id) : array
     {
-        try {
+        $delete = "DELETE FROM $table WHERE id=$id";
 
-            $delete = "DELETE FROM $table WHERE ". key($conditions) ."=". current($conditions);
+        try {
 
             $database = Database::getConnection();
 
@@ -115,38 +136,15 @@ class Model
 
             $statement->execute();
 
-            return [];
+            return [
+                'status' => 204,
+                'data' => []
+            ];
 
         } catch (\PDOException $pe) {
 
             throw new \Exception('Database error.', 500);
         }
-    }
-
-    private function handleConditions($conditions)
-    {
-        if (empty($conditions)) {
-            return '';
-        }
-
-        if (is_string($conditions)) {
-            return " $conditions";
-        }
-
-        $suffix = " WHERE ". key($conditions) ."=". current($conditions);
-
-        if (count($conditions) === 1) {
-            return $suffix;
-        }
-        
-        next($conditions);
-
-        while (false !== current($conditions)) {
-            $suffix .= " AND ". key($conditions) ."=". current($conditions);
-            next($conditions);
-        }
-            
-        return $suffix;
     }
 
     private function bindAll($statement, array $values) : void

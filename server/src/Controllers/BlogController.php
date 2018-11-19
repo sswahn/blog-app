@@ -28,7 +28,7 @@ class BlogController
 
             $model = new Blog($user);
 
-            $data = $model->get();
+            $data = $model->get($request);
 
             $code = $response->getStatusCode();
 
@@ -54,7 +54,7 @@ class BlogController
 
             $model = new Blog($user);
 
-            $data = $model->getOne($args);
+            $data = $model->getOne($request, $args);
 
             $code = $response->getStatusCode();
 
@@ -132,7 +132,7 @@ class BlogController
 
             $model = new Blog($user);
 
-            $data = $model->delete($args);
+            $data = $model->delete($request, $args);
 
             $code = $response->getStatusCode();
 
