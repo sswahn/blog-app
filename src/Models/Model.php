@@ -31,13 +31,15 @@ class Model
 
         $select = "SELECT ". implode(', ', $values) ." FROM $table";
 
-        if (false !== strpos($condition, 'ORDER BY')) {
-            $select .= " $condition";
-        }
-
         if (ctype_digit($condition)) {
             $select .= " WHERE id=$condition";
-        }  
+        } else {
+            $select .= " ORDER BY id DESC";
+        }
+
+        if (false !== strpos($condition, 'LIMIT')) {
+            $select .= " $condition";
+        }
         
         try {
 
@@ -81,7 +83,7 @@ class Model
 
             $statement->execute();
 
-            return $this->select($table, $keys, "ORDER BY id DESC LIMIT 1;");
+            return $this->select($table, $keys, "LIMIT 1;");
 
         } catch (\PDOException $pe) {
 

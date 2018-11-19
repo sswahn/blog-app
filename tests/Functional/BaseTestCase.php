@@ -66,7 +66,7 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
 
         // Register routes
-        require __DIR__ . '/../../src/test.routes.php';
+        require __DIR__ . '/../../src/routes.php';
 
         // Process the application
         $response = $app->process($request, $response);
