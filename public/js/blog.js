@@ -14,7 +14,7 @@ Vue.component('blog-posts', {
         </div>
         <div class="blog-message">{{ post.message }}</div>
         <div class="blog-modifiers">
-          <a :post-id="post.id" href="" @click="updatePost">update</a>
+          <a :post-id="post.id" :href="'/update/' + post.id">update</a>
           <span>|</span>
           <a :post-id="post.id" href="" @click="deletePost">delete</a>
         </div>

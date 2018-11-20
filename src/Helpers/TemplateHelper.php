@@ -12,6 +12,6 @@ class TemplateHelper
     {
         $path = $request->getUri()->getPath();
 
-        return $path === '/' ? 'blog.html' : str_replace('/', '', $path) . '.html';
+        return $path === '/' ? 'blog.html' : explode('/', $path)[1] . '.html';
     }
 }

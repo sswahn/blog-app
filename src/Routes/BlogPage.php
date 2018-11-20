@@ -11,5 +11,8 @@ $app->group('/', function () {
 
     $this->get('create', 'PageController:render')
          ->setName('create.blog.page');
+     
+     $this->get('update/{id}', 'PageController:render')
+         ->setName('update.blog.page');
     
 });
