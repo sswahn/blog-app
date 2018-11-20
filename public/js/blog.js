@@ -13,6 +13,11 @@ Vue.component('blog-posts', {
             </h2>
         </div>
         <div class="blog-message">{{ post.message }}</div>
+        <div class="blog-modifiers">
+          <a :post-id="post.id" href="" @click="updatePost">update</a>
+          <span>|</span>
+          <a :post-id="post.id" href="" @click="deletePost">delete</a>
+        </div>
       </div>
     </div>
   `,
@@ -30,6 +35,22 @@ Vue.component('blog-posts', {
     },
     setPosts(data) {
       this.posts = data
+    },
+    updatePost(event) {
+      event.preventDefault()
+      const id = event.target.getAttribute('post-id')
+      console.log(id); return;
+      // open modal with button that executes api call
+    },
+    deletePost(event) {
+      event.preventDefault()
+      const id = event.target.getAttribute('post-id')
+      if (window.confirm('Delete this post?')) {
+        return fetch(`/api/v1/blog/${id}`, { method: 'delete' })
+        .then(response => response.text())
+        .then(data => this.getPosts())
+        .catch(error => console.warn(error))
+      }
     }
   },
   mounted() {

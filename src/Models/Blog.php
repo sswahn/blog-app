@@ -103,8 +103,10 @@ class Blog extends Model
 
         $table = 'blog';
 
+        $values = [];
+
         $id = $args['id'];
 
-        return parent::call($method, $table, $id);
+        return parent::call($method, $table, $values, $id);
     }
 }
